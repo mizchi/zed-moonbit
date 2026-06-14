@@ -30,7 +30,7 @@ from pathlib import Path
 
 GRAMMAR_COMMIT = os.environ.get(
     "GRAMMAR_COMMIT",
-    "ebdb3f38d46309a3a7f81c2af357da05ec8a4470",
+    "c76eb43a7ea35de24eec13dee1fe22fadb2533d7",
 )
 
 TREE_SITTER_DIR = Path(os.environ.get("TREE_SITTER_DIR", "../tree-sitter-moonbit"))

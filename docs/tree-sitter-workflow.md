@@ -51,7 +51,7 @@ brew install jq
 Check `extension.toml`:
 
 ```toml
-rev = "ebdb3f38d46309a3a7f81c2af357da05ec8a4470"
+rev = "c76eb43a7ea35de24eec13dee1fe22fadb2533d7"
 ```
 
 Always match this version.
@@ -73,7 +73,7 @@ Always match this version.
 ```bash
 git clone https://github.com/moonbitlang/tree-sitter-moonbit
 cd tree-sitter-moonbit
-git checkout ebdb3f38d46309a3a7f81c2af357da05ec8a4470
+git checkout c76eb43a7ea35de24eec13dee1fe22fadb2533d7
 ```
 
 ---

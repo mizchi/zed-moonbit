@@ -22,6 +22,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y jq git
+          npm install -g tree-sitter-cli
 
       - name: Setup grammar
         run: |
@@ -30,6 +31,10 @@ jobs:
       - name: Validate Tree-sitter queries
         run: |
           make validate-queries
+
+      - name: Validate MoonBit syntax fixtures
+        run: |
+          make test-syntax
 
       - name: Rust check
         run: |

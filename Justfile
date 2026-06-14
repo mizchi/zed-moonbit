@@ -1,7 +1,7 @@
 set shell := ["bash", "-cu"]
 
 tree_sitter_dir := env("TREE_SITTER_DIR", "../tree-sitter-moonbit")
-grammar_commit := env("GRAMMAR_COMMIT", "ebdb3f38d46309a3a7f81c2af357da05ec8a4470")
+grammar_commit := env("GRAMMAR_COMMIT", "c76eb43a7ea35de24eec13dee1fe22fadb2533d7")
 node_types := tree_sitter_dir + "/src/node-types.json"
 python := if os() == "windows" { "python" } else { "python3" }
 
@@ -12,6 +12,7 @@ help:
   echo "  just clean-grammar       Remove the local MoonBit grammar checkout"
   echo "  just grammar-check       Check that the pinned grammar exists"
   echo "  just validate-queries    Run all query validation checks"
+  echo "  just test-syntax         Parse MoonBit syntax fixtures"
   echo "  just zed-log-path        Print the expected Zed log path"
   echo "  just zed-log             Tail Zed.log"
   echo "  just dev                 Validate queries and open the project in Zed"
@@ -55,6 +56,9 @@ validate-queries: grammar-check
     languages/moonbit/indents.scm \
     languages/moonbit/brackets.scm \
     languages/moonbit/injections.scm
+
+test-syntax: grammar-check
+  TREE_SITTER_DIR="{{tree_sitter_dir}}" {{python}} scripts/test_queries.py
 
 zed-log-path:
   {{python}} scripts/zed_log.py --print-path

@@ -11,6 +11,7 @@ This extension provides Tree-sitter-based syntax highlighting and integrates the
 ## Features
 
 - Syntax highlighting (Tree-sitter)
+- MoonBit 0.10 grammar and syntax coverage
 - LSP integration (`moonbit-lsp`)
 - Outline support (basic)
 - Brackets + indentation
@@ -87,6 +88,7 @@ Using Just:
 ```
 just dev
 just validate-queries
+just test-syntax
 just zed-log
 ```
 
@@ -95,6 +97,7 @@ Using Make:
 ```
 make dev
 make validate-queries
+make test-syntax
 make zed-log
 ```
 

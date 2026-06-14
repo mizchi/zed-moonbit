@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 TEST_FILES_DIR = Path("tests")
+TREE_SITTER_DIR = Path(os.environ.get("TREE_SITTER_DIR", "../tree-sitter-moonbit"))
 
 def run_parse(file_path):
     try:
         subprocess.run(
-            ["tree-sitter", "parse", str(file_path)],
+            ["tree-sitter", "parse", str(file_path.resolve())],
             check=True,
             stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
+            stderr=subprocess.DEVNULL,
+            cwd=TREE_SITTER_DIR,
         )
         return True
-    except subprocess.CalledProcessError:
+    except (subprocess.CalledProcessError, FileNotFoundError):
         return False
 
 def main():

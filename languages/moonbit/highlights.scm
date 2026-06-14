@@ -30,6 +30,12 @@
   (function_identifier
     (lowercase_identifier) @function))
 
+(trait_method_declaration
+  (function_identifier) @function)
+
+(impl_definition
+  (function_identifier) @function)
+
 ; Function Calls
 (apply_expression
   (qualified_identifier
@@ -149,5 +155,5 @@
 ; Operators
 [
   "+" "-" "*" "/" "%" "==" "!=" "<" "<=" ">" ">=" "&&" "||" "!"
-  "=" "+=" "-=" "*=" "/=" "|>"
+  "=" "+=" "-=" "*=" "/=" "|>" "<+" "<?"
 ] @operator

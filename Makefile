@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 TREE_SITTER_DIR ?= ../tree-sitter-moonbit
-GRAMMAR_COMMIT ?= ebdb3f38d46309a3a7f81c2af357da05ec8a4470
+GRAMMAR_COMMIT ?= c76eb43a7ea35de24eec13dee1fe22fadb2533d7
 NODE_TYPES := $(TREE_SITTER_DIR)/src/node-types.json
 
 ifeq ($(OS),Windows_NT)
@@ -10,7 +10,7 @@ else
 	PYTHON := python3
 endif
 
-.PHONY: help default grammar-setup clean-grammar grammar-check validate-queries zed-log-path zed-log dev watch watch-log
+.PHONY: help default grammar-setup clean-grammar grammar-check validate-queries test-syntax zed-log-path zed-log dev watch watch-log
 
 default: help
 
@@ -21,6 +21,7 @@ help:
 	@echo "  make clean-grammar    Remove the local MoonBit grammar checkout"
 	@echo "  make grammar-check    Check that the pinned grammar exists"
 	@echo "  make validate-queries Run all query validation checks"
+	@echo "  make test-syntax      Parse MoonBit syntax fixtures"
 	@echo "  make zed-log-path     Print the expected Zed log path"
 	@echo "  make zed-log          Tail Zed.log"
 	@echo "  make dev              Validate queries and open the project in Zed"
@@ -56,6 +57,9 @@ validate-queries: grammar-check
 		languages/moonbit/indents.scm \
 		languages/moonbit/brackets.scm \
 		languages/moonbit/injections.scm
+
+test-syntax: grammar-check
+	@TREE_SITTER_DIR="$(TREE_SITTER_DIR)" $(PYTHON) scripts/test_queries.py
 
 zed-log-path:
 	@$(PYTHON) scripts/zed_log.py --print-path
