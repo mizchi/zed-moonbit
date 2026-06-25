@@ -17,7 +17,6 @@ IGNORE = {
 
 STRING_ONLY_FILES = {
     "languages/moonbit/brackets.scm",
-    "languages/moonbit/injections.scm",
 }
 
 

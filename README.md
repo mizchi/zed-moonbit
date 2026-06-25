@@ -86,18 +86,22 @@ so this must be configured manually.
 Using Just:
 
 ```
+just ci
 just dev
 just validate-queries
 just test-syntax
+just test-lsp
 just zed-log
 ```
 
 Using Make:
 
 ```
+make ci
 make dev
 make validate-queries
 make test-syntax
+make test-lsp
 make zed-log
 ```
 
@@ -184,6 +188,7 @@ src/lib.rs                -> Rust extension entry point
 extension.toml           -> extension manifest
 languages/moonbit/       -> Tree-sitter config + queries
 scripts/                 -> validation + dev tools
+tests/lsp-sample/        -> sample project for LSP smoke tests
 ```
 
 ---
@@ -213,7 +218,7 @@ Small, focused changes only.
 Before opening a PR:
 
 ```
-make validate-queries
+just ci
 ```
 
 ---

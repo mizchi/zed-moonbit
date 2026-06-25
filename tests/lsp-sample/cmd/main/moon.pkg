@@ -1,0 +1,7 @@
+import {
+  "metalymph/zedmoonbitlsp" @sample
+}
+
+options(
+  "is-main": true,
+)

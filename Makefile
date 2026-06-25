@@ -10,7 +10,7 @@ else
 	PYTHON := python3
 endif
 
-.PHONY: help default grammar-setup clean-grammar grammar-check validate-queries test-syntax zed-log-path zed-log dev watch watch-log
+.PHONY: help default grammar-setup clean-grammar grammar-check validate-queries test-syntax test-lsp build-wasm ci zed-log-path zed-log dev watch watch-log
 
 default: help
 
@@ -22,6 +22,9 @@ help:
 	@echo "  make grammar-check    Check that the pinned grammar exists"
 	@echo "  make validate-queries Run all query validation checks"
 	@echo "  make test-syntax      Parse MoonBit syntax fixtures"
+	@echo "  make test-lsp         Check MoonBit LSP hover/completion/diagnostics"
+	@echo "  make build-wasm       Build the Zed extension wasm artifact"
+	@echo "  make ci               Run the validation suite used by CI"
 	@echo "  make zed-log-path     Print the expected Zed log path"
 	@echo "  make zed-log          Tail Zed.log"
 	@echo "  make dev              Validate queries and open the project in Zed"
@@ -55,11 +58,23 @@ validate-queries: grammar-check
 		languages/moonbit/highlights.scm \
 		languages/moonbit/outline.scm \
 		languages/moonbit/indents.scm \
-		languages/moonbit/brackets.scm \
-		languages/moonbit/injections.scm
+		languages/moonbit/brackets.scm
 
 test-syntax: grammar-check
 	@TREE_SITTER_DIR="$(TREE_SITTER_DIR)" $(PYTHON) scripts/test_queries.py
+
+test-lsp:
+	@$(PYTHON) scripts/test_lsp.py
+
+build-wasm:
+	@if command -v rustup >/dev/null 2>&1; then \
+		rustup target add --toolchain stable wasm32-wasip2; \
+		RUSTC="$$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --target wasm32-wasip2; \
+	else \
+		cargo build --release --target wasm32-wasip2; \
+	fi
+
+ci: validate-queries test-syntax test-lsp build-wasm
 
 zed-log-path:
 	@$(PYTHON) scripts/zed_log.py --print-path

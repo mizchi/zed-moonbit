@@ -28,7 +28,6 @@ SCM_FILES = [
     "languages/moonbit/outline.scm",
     "languages/moonbit/indents.scm",
     "languages/moonbit/brackets.scm",
-    "languages/moonbit/injections.scm",
 ]
 
 

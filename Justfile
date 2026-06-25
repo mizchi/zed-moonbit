@@ -13,6 +13,9 @@ help:
   echo "  just grammar-check       Check that the pinned grammar exists"
   echo "  just validate-queries    Run all query validation checks"
   echo "  just test-syntax         Parse MoonBit syntax fixtures"
+  echo "  just test-lsp            Check MoonBit LSP hover/completion/diagnostics"
+  echo "  just build-wasm          Build the Zed extension wasm artifact"
+  echo "  just ci                  Run the validation suite used by CI"
   echo "  just zed-log-path        Print the expected Zed log path"
   echo "  just zed-log             Tail Zed.log"
   echo "  just dev                 Validate queries and open the project in Zed"
@@ -54,11 +57,24 @@ validate-queries: grammar-check
     languages/moonbit/highlights.scm \
     languages/moonbit/outline.scm \
     languages/moonbit/indents.scm \
-    languages/moonbit/brackets.scm \
-    languages/moonbit/injections.scm
+    languages/moonbit/brackets.scm
 
 test-syntax: grammar-check
   TREE_SITTER_DIR="{{tree_sitter_dir}}" {{python}} scripts/test_queries.py
+
+test-lsp:
+  {{python}} scripts/test_lsp.py
+
+build-wasm:
+  #!/usr/bin/env bash
+  if command -v rustup >/dev/null 2>&1; then
+    rustup target add --toolchain stable wasm32-wasip2
+    RUSTC="$(rustup which --toolchain stable rustc)" rustup run stable cargo build --release --target wasm32-wasip2
+  else
+    cargo build --release --target wasm32-wasip2
+  fi
+
+ci: validate-queries test-syntax test-lsp build-wasm
 
 zed-log-path:
   {{python}} scripts/zed_log.py --print-path

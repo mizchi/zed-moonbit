@@ -18,6 +18,17 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Setup Just
+        uses: extractions/setup-just@v3
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip2
+
+      - name: Setup MoonBit
+        uses: hustcer/setup-moonbit@v1
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -26,16 +37,8 @@ jobs:
 
       - name: Setup grammar
         run: |
-          make grammar-setup
+          just grammar-setup
 
-      - name: Validate Tree-sitter queries
+      - name: Validate extension
         run: |
-          make validate-queries
-
-      - name: Validate MoonBit syntax fixtures
-        run: |
-          make test-syntax
-
-      - name: Rust check
-        run: |
-          cargo check
+          just ci
